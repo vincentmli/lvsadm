@@ -1,0 +1,51 @@
+# Config::Ldirectord 4.58
+# Wed Jul 24 21:05:51 2013
+
+
+
+autoreload=no
+checkinterval=2
+checktimeout=10
+logfile="/var/log/ldirectord.log"
+quiescent=yes
+
+
+[10-1-72-169:22]
+virtual=10.1.72.169:22
+	checktype=connect
+	fallback=127.0.0.1:22
+	protocol=tcp
+	real=10.2.72.99:22 masq
+	real=10.2.72.100:22 masq
+	scheduler=rr
+	service=ssh
+
+[10-1-72-169:80]
+virtual=10.1.72.169:80
+	checktype=negotiate
+	fallback=127.0.0.1:80
+	protocol=tcp
+	real=10.2.72.99:80 masq
+	real=10.2.72.100:80 masq
+	real=10.2.72.101:80 masq
+	real=10.2.72.102:80 masq
+	receive="It Works oh yeh"
+	request="index.html"
+	scheduler=rr
+	service=http
+
+[192.168.6.240:21]
+virtual=192.168.6.240:21
+	checktype=negotiate
+	fallback=127.0.0.1:21
+	login="anonymous"
+	passwd="anon@anon.anon"
+	protocol=tcp
+	real=192.168.7.4:21 masq
+	real=192.168.7.5:21 masq
+	receive="Welcome"
+	request="welcome.msg"
+	scheduler=rr
+	service=ftp
+
+
