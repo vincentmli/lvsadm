@@ -13,6 +13,7 @@ my $cfg = new Config::Ldirectord(
 print Dumper($cfg);
 
 $cfg->param("10-1-72-169:80.receive", "It works");
+$cfg->param("default.autoreload", "yes");
 $cfg->write();
 
 print Dumper($cfg);

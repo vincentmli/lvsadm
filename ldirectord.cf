@@ -1,9 +1,10 @@
 # Config::Ldirectord 4.58
-# Thu Jul 25 20:18:10 2013
+# Thu Jul 25 21:40:40 2013
 
 
 
-autoreload=no
+[default]
+autoreload=yes
 checkinterval=2
 checktimeout=10
 logfile="/var/log/ldirectord.log"

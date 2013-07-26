@@ -616,6 +616,7 @@ sub as_string {
         $STRING .= "# $currtime\n\n";
         while ( my ($block_name, $key_values) = each %{$self->{_DATA}} ) {
 		if ( $block_name eq "default" ) {
+           		$STRING .= sprintf("[%s]\n", $block_name);
 	                for my $key ( sort keys %{$key_values} ) {
                         	if ( $key eq "logfile" ) {
                                 	my $values = join (WRITE_DELIM, map { quote_values($_) } @{$key_values->{$key}} );
