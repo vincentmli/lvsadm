@@ -620,7 +620,12 @@ sub as_string {
                         	if ( $key eq "logfile" ) {
                                 	my $values = join (WRITE_DELIM, map { quote_values($_) } @{$key_values->{$key}} );
                                 	$STRING .= sprintf("%s=%s\n", "$key", "\"$values\"" );
-                        	} else {
+                        	}
+				elsif ( $key eq "callback" ) {
+					 my $values = join (WRITE_DELIM, map { quote_values($_) } @{$key_values->{$key}} );
+					 $STRING .= sprintf("%s=%s\n", "$key", "\"$values\"" );
+				}
+				else {
                                 	my $values = join (WRITE_DELIM, map { quote_values($_) } @{$key_values->{$key}} );
                                 	$STRING .= sprintf("%s=%s\n", $key, $values );
                         	}
@@ -665,6 +670,22 @@ sub as_string {
 				$STRING .= sprintf("%s=%s\n", "\t$key", "\"$values\"" );
 			}
 		 	elsif ( $key eq "database" ) {
+				my $values = join (WRITE_DELIM, map { quote_values($_) } @{$key_values->{$key}} );
+				$STRING .= sprintf("%s=%s\n", "\t$key", "\"$values\"" );
+			}
+		 	elsif ( $key eq "checkcommand" ) {
+				my $values = join (WRITE_DELIM, map { quote_values($_) } @{$key_values->{$key}} );
+				$STRING .= sprintf("%s=%s\n", "\t$key", "\"$values\"" );
+			}
+		 	elsif ( $key eq "secret" ) {
+				my $values = join (WRITE_DELIM, map { quote_values($_) } @{$key_values->{$key}} );
+				$STRING .= sprintf("%s=%s\n", "\t$key", "\"$values\"" );
+			}
+		 	elsif ( $key eq "fallbackcommand" ) {
+				my $values = join (WRITE_DELIM, map { quote_values($_) } @{$key_values->{$key}} );
+				$STRING .= sprintf("%s=%s\n", "\t$key", "\"$values\"" );
+			}
+		 	elsif ( $key eq "monitorfile" ) {
 				my $values = join (WRITE_DELIM, map { quote_values($_) } @{$key_values->{$key}} );
 				$STRING .= sprintf("%s=%s\n", "\t$key", "\"$values\"" );
 			}

@@ -7,12 +7,12 @@ use Data::Dumper;
 
 
 my $cfg = new Config::Ldirectord(
-	filename=>'/etc/ldirectord.cf',
+	filename=>'./ldirectord.cf',
 	syntax=>'ini'
 );
 print Dumper($cfg);
 
-$cfg->param("10-1-72-169:80.receive", "It Works oh yeh");
+$cfg->param("10-1-72-169:80.receive", "It works");
 $cfg->write();
 
 print Dumper($cfg);

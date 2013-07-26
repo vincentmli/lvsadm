@@ -1,5 +1,5 @@
 # Config::Ldirectord 4.58
-# Wed Jul 24 21:05:51 2013
+# Thu Jul 25 20:18:10 2013
 
 
 
@@ -29,7 +29,7 @@ virtual=10.1.72.169:80
 	real=10.2.72.100:80 masq
 	real=10.2.72.101:80 masq
 	real=10.2.72.102:80 masq
-	receive="It Works oh yeh"
+	receive="It works"
 	request="index.html"
 	scheduler=rr
 	service=http
