@@ -10,6 +10,10 @@ checktimeout=10
 logfile="/var/log/ldirectord.log"
 quiescent=yes
 
+[vip]
+eth1:1=192.168.1.111
+eth2:2=192.168.1.112
+eth3:3=192.168.1.113
 
 [10-1-72-169:22]
 virtual=10.1.72.169:22

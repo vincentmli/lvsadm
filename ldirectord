@@ -771,6 +771,7 @@ use vars qw(
 	    @OLDVIRTUAL
 	    @REAL
 	    @VIRTUAL
+	    %VIP
 	    $HOSTNAME
 	    %EMAILSTATUS
 	    %FORK_CHILDREN
@@ -1259,6 +1260,7 @@ sub read_emailalert
 sub read_config
 {
 	undef @VIRTUAL;
+	undef %VIP;
 	undef @REAL;
 	undef $CALLBACK;
 	undef %LD_INSTANCE;
@@ -1670,13 +1672,25 @@ sub read_config
 			$1 =~ /(^([0-9A-Za-z._+-]+))/ or &config_error($line,
 					"invalid SMTP server address");
 			$SMTP = $1;
-		} elsif  ($linedata  =~ /^maintenancedir\s*=\s*(.*)/) {
+		}
+		 elsif  ($linedata  =~ /^maintenancedir\s*=\s*(.*)/) {
 			$1 =~ /(.+)/ or &config_error($line,
 					"maintenance directory not specified");
 			$MAINTDIR = $1;
 			-d $MAINTDIR or &config_warn($line,
 					"maintenance directory does not exist");
-		} else {
+		}
+		 elsif  ($linedata  =~ /^(eth.*?)\s*=\s*(.*)/) {
+			my $interface = $1;
+			my $vip = $2;
+			$interface =~ /(.+)/ or &config_error($line,
+					"interface not specified");
+			$vip =~ /(.+)/ or &config_error($line,
+					"vip not specified");
+			$VIP{$interface}=$vip;
+			#add_virtual_ip($line, $interface, $vip);
+		}
+		 else {
 			if ($linedata  =~ /^timeout\s*=\s*(.*)/) {
 				&config_error($line,
 						"timeout directive " .
@@ -1972,6 +1986,38 @@ sub add_real_server_range
 	while ( $i le $last_i ) {
 		&add_real_server($line, $vsrv, &int_to_ip($i), $port, $flags);
 		$i++;
+	}
+}
+
+#delete all virtual ips when ldirectord stop
+
+sub del_virtual_ip
+{
+	my (%vips) = (@_);
+        foreach my $interface ( keys %vips ) {
+
+		print "$interface\n";
+		&system_wrapper("ip addr del $vips{$interface} dev $interface");
+		&ld_log("Purged virtual ip ($interface): " . $vips{$interface} );
+        }
+
+}
+
+# add_virtual_ip
+# Add virtual ips to director
+#      %VIPS: interface and ip to director
+# return: none
+
+sub add_virtual_ip
+{
+	use IO::Socket;
+	use IO::Interface::Simple;
+
+	my (%vips) = (@_);
+	my $s = IO::Socket::INET->new(Proto => 'udp');
+	foreach my $interface ( keys %vips ) {
+		$s->if_addr("$interface","$vips{$interface}")
+           		or &config_error("failed to add  $vips{$interface} to $interface");
 	}
 }
 
@@ -2369,6 +2415,9 @@ sub ld_start
 	my $nr;
 	my $server_down = {};
 
+	# add virtual ip 
+	add_virtual_ip(%VIP);
+
 	# read status of current ipvsadm -L -n
 	$oldsrv=&ld_read_ipvsadm();
 
@@ -2461,6 +2510,7 @@ sub ld_cmd_children
 
 sub ld_stop
 {
+
 	# Kill children
 	if ($FORKING eq 'yes') {
 		foreach my $virtual_id (keys (%FORK_CHILDREN)) {
@@ -2480,6 +2530,8 @@ sub ld_stop
 		}
 		purge_virtual($v, "stop");
 	}
+	# delete all virtual ips
+	del_virtual_ip(%VIP);
 }
 
 sub ld_main
