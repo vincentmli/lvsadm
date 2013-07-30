@@ -658,7 +658,14 @@ sub as_string {
 			if ( $key eq "real" ) {
 				my @values =  map { quote_values($_) } @{$key_values->{$key}} ;
 				for (@values) {
-					$STRING .= sprintf("%s=%s\n", "\t$key", $_ );
+					my @reals = split(/\s*=\s*/, $_);
+					if ($#reals >= 1) {
+						foreach my $real (@reals) {
+							$STRING .= sprintf("%s=%s\n", "\t$key", $real );
+						}
+					} else {
+						$STRING .= sprintf("%s=%s\n", "\t$key", $_ );
+					}
 				}
 			}
 		 	elsif ( $key eq "receive" ) {

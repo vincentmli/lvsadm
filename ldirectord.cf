@@ -1,20 +1,32 @@
 # Config::Ldirectord 4.58
-# Mon Jul 29 19:49:26 2013
+# Mon Jul 29 21:22:49 2013
+
 
 
 
 [vip]
-eth0:1=192.168.1.118
+eth0:1=192.168.1.111
 eth0:2=192.168.1.112
 eth0:3=192.168.1.113
+eth0:4=192.168.1.112
 
 [default]
-autoreload=yes
+autoreload=no
 checkinterval=2
 checktimeout=10
 logfile="/var/log/ldirectord.log"
 quiescent=yes
 
+
+[192-168-1-169:80]
+virtual=192.168.1.160:80
+	checktype=connect
+	protocol=tcp
+	real=192.168.3.2:80 masq
+	real=192.168.3.3:80 masq
+	real=192.168.3.4:80 masq
+	real=192.168.3.4:80 masq
+	real=192.168.3.8:80 masq
 
 [10-1-72-169:22]
 virtual=10.1.72.169:22
@@ -35,7 +47,7 @@ virtual=10.1.72.169:80
 	real=10.2.72.100:80 masq
 	real=10.2.72.101:80 masq
 	real=10.2.72.102:80 masq
-	receive="It works"
+	receive="It works oh yes"
 	request="index.html"
 	scheduler=rr
 	service=http
