@@ -2017,7 +2017,7 @@ sub add_virtual_ip
 	my $s = IO::Socket::INET->new(Proto => 'udp');
 	foreach my $interface ( keys %vips ) {
 		$s->if_addr("$interface","$vips{$interface}")
-           		or &config_error("failed to add  $vips{$interface} to $interface");
+           		or &ld_log("failed to add  $vips{$interface} to $interface");
 	}
 }
 
