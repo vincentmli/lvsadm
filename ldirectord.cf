@@ -1,7 +1,12 @@
 # Config::Ldirectord 4.58
-# Thu Jul 25 21:40:40 2013
+# Mon Jul 29 19:49:26 2013
 
 
+
+[vip]
+eth0:1=192.168.1.118
+eth0:2=192.168.1.112
+eth0:3=192.168.1.113
 
 [default]
 autoreload=yes
@@ -10,10 +15,6 @@ checktimeout=10
 logfile="/var/log/ldirectord.log"
 quiescent=yes
 
-[vip]
-eth1:1=192.168.1.111
-eth2:2=192.168.1.112
-eth3:3=192.168.1.113
 
 [10-1-72-169:22]
 virtual=10.1.72.169:22

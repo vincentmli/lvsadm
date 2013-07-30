@@ -10,11 +10,12 @@ my $cfg = new Config::Ldirectord(
 	filename=>'./ldirectord.cf',
 	syntax=>'ini'
 );
-print Dumper($cfg);
+#print Dumper($cfg);
 
 $cfg->param("10-1-72-169:80.receive", "It works");
 $cfg->param("default.autoreload", "yes");
+$cfg->param("vip.eth0:1", "192.168.1.118");
 $cfg->write();
 
-print Dumper($cfg);
+#print Dumper($cfg);
 

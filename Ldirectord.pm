@@ -632,11 +632,18 @@ sub as_string {
                         	}
                 	}
 
+		} elsif ( $block_name eq "vip" ) {
+			$STRING .= sprintf("[%s]\n", $block_name);
+	                for my $key ( sort keys %{$key_values} ) {
+                               	my $values = join (WRITE_DELIM, map { quote_values($_) } @{$key_values->{$key}} );
+                               	$STRING .= sprintf("%s=%s\n", $key, $values );
+                	}
+			
 		}
 		$STRING .= "\n";
 	}
         while ( my ($block_name, $key_values) = each %{$self->{_DATA}} ) {
-	   if ( $block_name eq "default" ) {
+	   if ( $block_name eq "default" || $block_name eq "vip") {
 		next;
 	   } else {
            	$STRING .= sprintf("[%s]\n", $block_name);
