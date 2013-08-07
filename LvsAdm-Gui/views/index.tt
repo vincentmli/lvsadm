@@ -13,6 +13,30 @@
 <div id="page">
       <div id="sidebar">
         <ul id="sidebar-items">
+	 <li>
+	        <% IF not session.logged_in %>
+               <a href="<% login_url %>">log in</a>
+                <% ELSE %>
+               <a href="<% logout_url %>">log out</a>
+               <% END %>
+               <% IF msg %>
+                <% msg %>
+                <% END %>
+
+              <% IF err %><p class=error><strong>Error:</strong> <% err %><% END %>
+              <form id="sidebar" action="<% login_url %>" method=post>
+              <dl>
+                  <dt>Username:
+                 <dd><input type=text name=username>
+                 <dt>Password:
+                 <dd><input type=password name=password>
+                 <dd><input type=submit value=Login>
+             </dl>
+             </form>
+
+            
+
+         </li>
           <li>
             <h3>Join the community</h3>
             <ul class="links">
@@ -62,51 +86,25 @@
           <h1>Getting started</h1>
           <h2>Here&rsquo;s how to get dancing:</h2>
                     
-          <h3><a href="#" id="about_env_link">About your application's environment</a></h3>
-
-          <div id="about-content" style="display: none;">
-            <table>
-                <tbody>
-                <tr>
-                    <td>Perl version</td>
-                    <td><tt><% perl_version %></tt></td>
-                </tr>
-                <tr>
-                    <td>Dancer version</td>
-                    <td><tt><% dancer_version %></tt></td>
-                </tr>
-                <tr>
-                    <td>Backend</td>
-                    <td><tt><% settings.apphandler %></tt></td>
-                </tr>
-                <tr>
-                    <td>Appdir</td>
-                    <td><tt>/home/vincent/LvsAdm-Gui</tt></td>
-                </tr>
-                <tr>
-                    <td>Template engine</td>
-                    <td><tt><% settings.template %></tt></td>
-                </tr>
-                <tr>
-                    <td>Logger engine</td>
-                    <td><tt><% settings.logger %></tt></td>
-                </tr>
-                <tr>
-                    <td>Running environment</td>
-                    <td><tt><% settings.environment %></tt></td>
-                </tr>
-                </tbody>
-            </table>
-          </div>
-
-    <script type="text/javascript">
-    $('#about_env_link').click(function() {
-        $('#about-content').slideToggle('fast', function() {
-            // ok
-        });
-        return( false );
-    });
-    </script>
+          <% IF session.logged_in %>
+             <form action="<% add_entry_url %>" method=post class=add-entry>
+                <dl>
+                  <dt>Title:
+                  <dd><input type=text size=30 name=title>
+                  <dt>Text:
+                  <dd><textarea name=text rows=5 cols=40></textarea>
+                  <dd><input type=submit value=Share>
+                </dl>
+             </form>
+          <% END %>
+         <ul class=entries>
+         <% IF entries.size %>
+              <% FOREACH id IN entries.keys.nsort %>
+                 <li><h2><% entries.$id.title %></h2><% entries.$id.text %>
+              <% END %>
+        <% ELSE %>
+        <% END %>
+        </ul>
 
 
           <ol>          
