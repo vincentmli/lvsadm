@@ -26,3 +26,8 @@ template: "template_toolkit"
 #     start_tag: '[%'
 #     end_tag:   '%]'
 
+plugins:
+   Database:
+       driver:  SQLite
+       database: dancr.db 
+   

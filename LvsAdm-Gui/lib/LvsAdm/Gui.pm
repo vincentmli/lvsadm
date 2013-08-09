@@ -4,8 +4,8 @@ use DBI;
 use File::Spec;
 use File::Slurp;
 use Template;
+use Dancer::Plugin::Database;
 
-set 'database'     => File::Spec->catfile(File::Spec->tmpdir(), 'dancr.db');
 set 'session'      => 'Simple';
 set 'username'     => 'admin';
 set 'password'     => 'password';
@@ -30,19 +30,6 @@ sub get_flash {
        return $msg;
 }
 
-sub connect_db {
-       my $dbh = DBI->connect("dbi:SQLite:dbname=".setting('database')) or
-               die $DBI::errstr;
-
-       return $dbh;
-}
-
-sub init_db {
-       my $db = connect_db();
-       my $schema = read_file('./schema.sql');
-       $db->do($schema) or die $db->errstr;
-}
-
 hook before_template => sub {
        my $tokens = shift;
 
@@ -52,9 +39,8 @@ hook before_template => sub {
 
 
 get '/' => sub {
-    my $db = connect_db();
     my $sql = 'select id, title, text from entries order by id desc';
-    my $sth = $db->prepare($sql) or die $db->errstr;
+    my $sth = database->prepare($sql);
     $sth->execute or die $sth->errstr;
     template 'index', {
 	'msg' => get_flash(),
@@ -69,9 +55,8 @@ post '/add' => sub {
                send_error("Not logged in", 401);
        }
 
-       my $db = connect_db();
        my $sql = 'insert into entries (title, text) values (?, ?)';
-       my $sth = $db->prepare($sql) or die $db->errstr;
+       my $sth = database->prepare($sql);
        $sth->execute(params->{'title'}, params->{'text'}) or die $sth->errstr;
 
        set_flash('New entry posted!');
@@ -109,7 +94,6 @@ get '/logout' => sub {
        redirect '/';
 };
 
-init_db();
 
 
 true;
