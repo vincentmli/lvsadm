@@ -35,6 +35,19 @@ simple_crud(
     record_title => 'vs',
     db_table => 'vs',
     prefix => '/',
+    labels => {     # More human-friendly labels for some columns
+        vsblock => 'Name',
+        virtual => 'Destination',
+        real => 'members',
+    },
+    display_columns  => [ qw( id vsblock virtual checktype real scheduler request receive login passwd ) ],
+    acceptable_values => {
+       scheduler => [
+           [ 'wrr', 'weight round robin'],
+           [ 'rr', 'round robin'],
+       ],
+    },
+
 );
 
 
