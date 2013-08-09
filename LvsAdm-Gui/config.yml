@@ -30,4 +30,4 @@ plugins:
    Database:
        driver:  SQLite
        database: dancr.db 
-   
+

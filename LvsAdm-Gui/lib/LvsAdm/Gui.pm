@@ -5,6 +5,7 @@ use File::Spec;
 use File::Slurp;
 use Template;
 use Dancer::Plugin::Database;
+use Dancer::Plugin::SimpleCRUD;
 
 set 'session'      => 'Simple';
 set 'username'     => 'admin';
@@ -29,6 +30,13 @@ sub get_flash {
 
        return $msg;
 }
+
+simple_crud(
+    record_title => 'Blog',
+    db_table => 'entries',
+    prefix => '/blog',
+);
+
 
 hook before_template => sub {
        my $tokens = shift;
