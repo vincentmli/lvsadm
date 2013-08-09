@@ -100,7 +100,8 @@
          <ul class=entries>
          <% IF entries.size %>
               <% FOREACH id IN entries.keys.nsort %>
-                 <li><h2><% entries.$id.title %></h2><% entries.$id.text %>
+                 <--li><h2><% entries.$id.title %></h2><% entries.$id.text %-->
+                 <li><h2><% entries.$id.vsblock %></h2><% entries.$id.virtual %>
               <% END %>
         <% ELSE %>
         <% END %>

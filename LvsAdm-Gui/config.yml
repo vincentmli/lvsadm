@@ -29,5 +29,5 @@ template: "template_toolkit"
 plugins:
    Database:
        driver:  SQLite
-       database: dancr.db 
+       database: vs.db 
 

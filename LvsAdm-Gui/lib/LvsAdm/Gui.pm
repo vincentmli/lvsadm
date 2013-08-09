@@ -32,9 +32,9 @@ sub get_flash {
 }
 
 simple_crud(
-    record_title => 'Blog',
-    db_table => 'entries',
-    prefix => '/blog',
+    record_title => 'vs',
+    db_table => 'vs',
+    prefix => '/',
 );
 
 
@@ -47,7 +47,8 @@ hook before_template => sub {
 
 
 get '/' => sub {
-    my $sql = 'select id, title, text from entries order by id desc';
+    #my $sql = 'select id, title, text from entries order by id desc';
+    my $sql = 'select * from vs order by id desc';
     my $sth = database->prepare($sql);
     $sth->execute or die $sth->errstr;
     template 'index', {
@@ -63,9 +64,11 @@ post '/add' => sub {
                send_error("Not logged in", 401);
        }
 
-       my $sql = 'insert into entries (title, text) values (?, ?)';
+       #my $sql = 'insert into entries (title, text) values (?, ?)';
+       my $sql = 'insert into vs (vsblock, text) values (?, ?)';
        my $sth = database->prepare($sql);
-       $sth->execute(params->{'title'}, params->{'text'}) or die $sth->errstr;
+       #$sth->execute(params->{'title'}, params->{'text'}) or die $sth->errstr;
+       $sth->execute(params->{'vsblock'}, params->{'virtual'}) or die $sth->errstr;
 
        set_flash('New entry posted!');
        redirect '/';
