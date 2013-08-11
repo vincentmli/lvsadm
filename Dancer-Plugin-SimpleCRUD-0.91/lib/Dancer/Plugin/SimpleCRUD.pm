@@ -537,12 +537,12 @@ sub _config_to_ldirectord {
    #print Dumper($params);
    my $vsblock = $params->{'vsblock'};
    my $cfg = new Config::Ldirectord(
-        filename=>'/tmp/ldirectord.cf',
+        filename=>'/etc/ldirectord.cf',
         syntax=>'ini'
    );
    foreach my $key ( keys %{ $params } ) {
         next if ( $key eq 'vsblock' );
-        next unless defined $params->{$key};
+        next if( $params->{$key} eq '');
         $cfg->param("$vsblock.$key", "$params->{$key}");
    }
    $cfg->write();
