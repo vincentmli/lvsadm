@@ -7,7 +7,7 @@ use Data::Dumper;
 
 
 my $cfg = new Config::Ldirectord(
-	filename=>'./ldirectord.cf',
+	filename=>'/tmp/ldirectord.cf',
 	syntax=>'ini'
 );
 #print Dumper($cfg);

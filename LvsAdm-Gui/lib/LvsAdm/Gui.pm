@@ -6,6 +6,7 @@ use File::Slurp;
 use Template;
 use Dancer::Plugin::Database;
 use Dancer::Plugin::SimpleCRUD;
+use Config::Ldirectord;
 
 our $VERSION = '0.1';
 

@@ -35,6 +35,8 @@ use Dancer qw(:syntax);
 use Dancer::Plugin::Database;
 use HTML::Table::FromDatabase;
 use CGI::FormBuilder;
+use Config::Ldirectord;
+use Data::Dumper;
 
 our $VERSION = '0.91';
 
@@ -530,6 +532,24 @@ register_hook(qw(
 ));
 register_plugin;
 
+sub _config_to_ldirectord {
+   my ($params) = @_;
+   #print Dumper($params);
+   my $vsblock = $params->{'vsblock'};
+   my $cfg = new Config::Ldirectord(
+        filename=>'/tmp/ldirectord.cf',
+        syntax=>'ini'
+   );
+   foreach my $key ( keys %{ $params } ) {
+        next if ( $key eq 'vsblock' );
+        next unless defined $params->{$key};
+        $cfg->param("$vsblock.$key", "$params->{$key}");
+   }
+   $cfg->write();
+
+}
+
+
 sub _create_add_edit_route {
     my ($args, $table_name, $key_column) = @_;
     my $params = params;
@@ -760,6 +780,7 @@ sub _create_add_edit_route {
         $meta_for_hook->{success} = $success;
         $meta_for_hook->{verb} = $verb;
         if ($success) {
+            _config_to_ldirectord(\%params);
 
             # Redirect to the list page
             # TODO: pass a param to cause it to show a message?
