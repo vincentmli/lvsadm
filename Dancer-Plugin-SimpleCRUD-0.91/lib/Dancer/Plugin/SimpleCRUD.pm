@@ -509,14 +509,17 @@ CONFIRMDELETE
         my $del_url_stub = _construct_url(
             $args{dancer_prefix}, $args{prefix}, '/delete'
         );
+        my $row;
         my $delete_handler = sub {
             my ($id) = params->{record_id} || splat;
             my $dbh = database($args{db_connection_name});
+            $row = database->quick_select($table_name, { id => $id });
             $dbh->quick_delete($table_name, { $key_column => $id })
                 or return _apply_template("<p>Failed to delete!</p>",
                 $args{'template'});
 
             redirect _external_url($args{dancer_prefix}, $args{prefix});
+            _delete_config_ldirectord($row);
         };
         _ensure_auth('edit', $delete_handler, \%args);
         post qr[$del_url_stub/?(.+)?$] => $delete_handler;
@@ -546,6 +549,25 @@ sub _config_to_ldirectord {
         $cfg->param("$vsblock.$key", "$params->{$key}");
    }
    $cfg->write();
+
+}
+
+sub _delete_config_ldirectord {
+
+   my ($row) = @_;
+   my $vsblock = $row->{'vsblock'};
+   my $cfg = new Config::Ldirectord(
+        filename=>'/etc/ldirectord.cf',
+        syntax=>'ini'
+   );
+   foreach my $key ( keys %{ $row } ) {
+        next if ( $key eq 'vsblock' );
+        next if( $row->{$key} eq '');
+        $cfg->delete("$vsblock.$key");
+   }
+   $cfg->delete("$vsblock");
+   $cfg->write();
+
 
 }
 

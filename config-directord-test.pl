@@ -7,7 +7,7 @@ use Data::Dumper;
 
 
 my $cfg = new Config::Ldirectord(
-	filename=>'/tmp/ldirectord.cf',
+	filename=>'/etc/ldirectord.cf',
 	syntax=>'ini'
 );
 #print Dumper($cfg);
@@ -22,6 +22,11 @@ $cfg->param("192-168-1-169:80.virtual", "192.168.1.160:80");
 $cfg->param("192-168-1-169:80.checktype", "connect");
 $cfg->param("192-168-1-169:80.protocol", "tcp");
 $cfg->param("192-168-1-169:80.real", "192.168.3.2:80 masq = 192.168.3.3:80 masq = 192.168.3.4:80 masq = 192.168.3.4:80 masq = 192.168.3.8:80 masq");
+$cfg->delete('default.autoreload');
+$cfg->param("default.autoreload", "yes");
+$cfg->delete('vs_http14.scheduler');
+$cfg->delete('vs_http6');
+$cfg->delete('192-168-1-169:80');
 
 $cfg->write();
 

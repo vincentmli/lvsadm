@@ -15,6 +15,7 @@ simple_crud(
     db_table => 'vs',
     prefix => '/',
 #    template => 'vs.tt',
+    deleteable => 1,
     labels => {     # More human-friendly labels for some columns
         vsblock => 'Name',
         virtual => 'Destination',
