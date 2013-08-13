@@ -546,16 +546,17 @@ sub _config_to_ldirectord {
    );
    foreach my $key ( keys %{ $params } ) {
         next if ( $key eq 'vsblock' );
-        next if( $params->{$key} eq '');
-        $cfg->param("$vsblock.$key", "$params->{$key}");
+        if( $params->{$key} eq '') {
+		$cfg->delete("$vsblock.$key");
+	} else {
+        	$cfg->param("$vsblock.$key", "$params->{$key}");
+	}
    }
    $cfg->write();
 
 }
 
 sub _delete_config_ldirectord {
-
-   no warnings;
 
    my ($row) = @_;
    my $vsblock = $row->{'vsblock'};
@@ -565,7 +566,6 @@ sub _delete_config_ldirectord {
    );
    foreach my $key ( keys %{ $row } ) {
         next if ( $key eq 'vsblock' );
-        next if( $row->{$key} eq '');
         $cfg->delete("$vsblock.$key");
    }
    $cfg->delete("$vsblock");

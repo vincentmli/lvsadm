@@ -21,7 +21,7 @@ simple_crud(
         virtual => 'Destination',
         real => 'members',
     },
-    display_columns  => [ qw( vsblock virtual real scheduler checktype request receive login passwd ) ],
+    display_columns  => [ qw( vsblock virtual protocol real scheduler request receive login passwd ) ],
     acceptable_values => {
        scheduler => [
            [ 'wrr', 'weight round robin'],
