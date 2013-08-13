@@ -536,6 +536,7 @@ register_hook(qw(
 register_plugin;
 
 sub _config_to_ldirectord {
+   no warnings;
    my ($params) = @_;
    #print Dumper($params);
    my $vsblock = $params->{'vsblock'};
@@ -553,6 +554,8 @@ sub _config_to_ldirectord {
 }
 
 sub _delete_config_ldirectord {
+
+   no warnings;
 
    my ($row) = @_;
    my $vsblock = $row->{'vsblock'};
