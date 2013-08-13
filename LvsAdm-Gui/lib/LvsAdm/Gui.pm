@@ -13,7 +13,7 @@ our $VERSION = '0.1';
 simple_crud(
     record_title => 'vs',
     db_table => 'vs',
-    prefix => '/',
+    prefix => '/lvsadm',
 #    template => 'vs.tt',
     deleteable => 1,
     labels => {     # More human-friendly labels for some columns
@@ -28,8 +28,21 @@ simple_crud(
            [ 'rr', 'round robin'],
        ],
     },
+    auth => {
+        view => {
+            require_login => 1,
+        },
+        edit => {
+            require_role => 'editor',
+        },
+    },
 
 );
+
+get '/' => sub {
+    redirect '/lvsadm';
+};
+
 
 
 true;

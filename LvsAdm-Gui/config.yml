@@ -9,6 +9,8 @@ appname: "LvsAdm::Gui"
 # views/layouts/main.tt)
 layout: "main"
 
+session: simple
+
 # when the charset is set to UTF-8 Dancer will handle for you
 # all the magic of encoding and decoding. You should not care
 # about unicode within your app when this setting is set (recommended).
@@ -30,4 +32,15 @@ plugins:
    Database:
        driver:  SQLite
        database: vs.db 
+   Auth::Extensible:
+       realms:
+            foo:
+                provider: Config
+                users:
+                    - user: viewer
+                      pass: viewer
+                    - user: admin 
+                      pass: admin 
+                      roles:
+                        - editor
 
