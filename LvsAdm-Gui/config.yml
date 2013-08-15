@@ -31,7 +31,7 @@ template: "template_toolkit"
 plugins:
    Database:
        driver:  SQLite
-       database: vs.db 
+       database: lvsadm.db 
    Auth::Extensible:
        realms:
             foo:

@@ -13,7 +13,7 @@ our $VERSION = '0.1';
 simple_crud(
     record_title => 'vs',
     db_table => 'vs',
-    prefix => '/lvsadm',
+    prefix => '/vs',
 #    template => 'vs.tt',
     deleteable => 1,
     labels => {     # More human-friendly labels for some columns
@@ -39,8 +39,35 @@ simple_crud(
 
 );
 
+simple_crud(
+    record_title => 'global',
+    db_table => 'global',
+    prefix => '/global',
+#    template => 'vs.tt',
+    labels => {     # More human-friendly labels for some columns
+        autoreload => 'auto reload',
+        logfile => 'log file',
+    },
+    display_columns  => [ qw( autoreload logfile ) ],
+    acceptable_values => {
+       autoreload => [
+           [ 'yes', 'yes'],
+           [ 'no', 'no'],
+       ],
+    },
+    auth => {
+        view => {
+            require_login => 1,
+        },
+        edit => {
+            require_role => 'editor',
+        },
+    },
+
+);
+
 get '/' => sub {
-    redirect '/lvsadm';
+    redirect '/vs';
 };
 
 
