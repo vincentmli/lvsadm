@@ -10,6 +10,32 @@ use Config::Ldirectord;
 
 our $VERSION = '0.1';
 
+my $flash;
+
+sub set_flash {
+       my $message = shift;
+
+       $flash = $message;
+}
+
+sub get_flash {
+
+       my $msg = $flash;
+       $flash = "";
+
+       return $msg;
+}
+
+
+hook before_template => sub {
+       my $tokens = shift;
+
+       $tokens->{'css_url'} = request->base . 'css/style.css';
+       $tokens->{'login_url'} = uri_for('/login');
+       $tokens->{'logout_url'} = uri_for('/logout');
+};
+
+
 simple_crud(
     record_title => 'vs',
     db_table => 'vs',
@@ -66,9 +92,43 @@ simple_crud(
 
 );
 
-get '/' => sub {
-    redirect '/vs';
+any ['get', 'post'] => '/login' => sub {
+       my $err;
+
+       if ( request->method() eq "POST" ) {
+               # process form input
+               if ( params->{'username'} ne setting('username') ) {
+                       $err = "Invalid username";
+               }
+               elsif ( params->{'password'} ne setting('password') ) {
+                       $err = "Invalid password";
+               }
+               else {
+                       session 'logged_in' => true;
+                       set_flash('You are logged in.');
+                       return redirect '/';
+               }
+       }
+
+       # display login form
+       template 'login.tt', {
+               'err' => $err,
+       };
+
 };
+
+
+get '/' => sub {
+    template 'index.tt';
+};
+
+get '/logout' => sub {
+       session->destroy;
+       set_flash('You are logged out.');
+       redirect '/';
+};
+
+
 
 
 

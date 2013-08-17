@@ -207,3 +207,9 @@ padding-right: 160px;
 font-family: sans-serif;
 font-size: 10px;
 }
+
+#center {
+clear: both;
+text-align: center;
+padding-right: 160px;
+}

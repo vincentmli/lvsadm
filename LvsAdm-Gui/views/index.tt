@@ -11,101 +11,13 @@
 -->
 
 <div id="page">
-      <div id="sidebar">
-        <ul id="sidebar-items">
-	 <li>
-	        <% IF not session.logged_in %>
-               <a href="<% login_url %>">log in</a>
-                <% ELSE %>
-               <a href="<% logout_url %>">log out</a>
-               <% END %>
-               <% IF msg %>
-                <% msg %>
-                <% END %>
-
-              <% IF err %><p class=error><strong>Error:</strong> <% err %><% END %>
-              <form id="sidebar" action="<% login_url %>" method=post>
-              <dl>
-                  <dt>Username:
-                 <dd><input type=text name=username>
-                 <dt>Password:
-                 <dd><input type=password name=password>
-                 <dd><input type=submit value=Login>
-             </dl>
-             </form>
-
-            
-
-         </li>
-          <li>
-            <h3>Join the community</h3>
-            <ul class="links">
-
-              <li><a href="http://perldancer.org/">PerlDancer</a></li>
-              <li><a href="http://twitter.com/PerlDancer/">Official Twitter</a></li>
-              <li><a href="https://github.com/PerlDancer/Dancer/">GitHub Community</a></li>
-            </ul>
-          </li>
-          
-          <li>
-            <h3>Browse the documentation</h3>
-
-            <ul class="links">
-              <li><a
-              href="http://search.cpan.org/dist/Dancer/lib/Dancer/Introduction.pod">Introduction</a></li>
-              <li><a href="http://search.cpan.org/dist/Dancer/lib/Dancer/Cookbook.pod">Cookbook</a></li>
-              <li><a href="http://search.cpan.org/dist/Dancer/lib/Dancer/Deployment.pod">Deployment Guide</a></li>
-              <li><a
-              href="http://search.cpan.org/dist/Dancer/lib/Dancer/Tutorial.pod"
-              title="a tutorial to build a small blog engine with Dancer">Tutorial</a></li>
-            </ul>
-          </li>
-
-          <li>
-            <h3>Your application's environment</h3>
-
-            <ul>
-                <li>Location: <code>/home/vincent/LvsAdm-Gui</code></li>
-                <li>Template engine: <code><% settings.template %></code></li>
-                <li>Logger: <code><% settings.logger %></code></li>
-                <li>Environment: <code><% settings.environment %></code></li>
-            </ul>
-
-          </li>
-        </ul>
-
-      </div>
 
       <div id="content">
-        <div id="header">
-          <h1>Perl is dancing</h1>
-          <h2>You&rsquo;ve joined the dance floor!</h2>
-        </div>
 
         <div id="getting-started">
           <h1>Getting started</h1>
           <h2>Here&rsquo;s how to get dancing:</h2>
                     
-          <% IF session.logged_in %>
-             <form action="<% add_entry_url %>" method=post class=add-entry>
-                <dl>
-                  <dt>Title:
-                  <dd><input type=text size=30 name=title>
-                  <dt>Text:
-                  <dd><textarea name=text rows=5 cols=40></textarea>
-                  <dd><input type=submit value=Share>
-                </dl>
-             </form>
-          <% END %>
-         <ul class=entries>
-         <% IF entries.size %>
-              <% FOREACH id IN entries.keys.nsort %>
-                 <li><h2><% entries.$id.vsblock %></h2><% entries.$id.virtual %>
-              <% END %>
-        <% ELSE %>
-        <% END %>
-        </ul>
-
 
           <ol>          
             <li>
@@ -141,6 +53,6 @@
             </li>
 
           </ol>
-        </div>
+       </div>
       </div>
     </div>
